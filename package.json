@@ -1,6 +1,6 @@
 {
   "name": "baby-connect",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "API for communicating with Baby Connect",
   "main": "src/baby_connect.js",
   "repository": "https://github.com/mroch/baby-connect",
