@@ -1,0 +1,13 @@
+{
+  "name": "baby-connect",
+  "version": "0.0.1",
+  "description": "API for communicating with Baby Connect",
+  "main": "src/baby_connect.js",
+  "repository": "https://github.com/mroch/baby-connect",
+  "author": "Marshall Roch <marshall@mroch.com>",
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "dateformat": "^2.0.0",
+    "uuid": "^3.0.1"
+  }
+}
