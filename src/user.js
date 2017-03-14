@@ -3,6 +3,8 @@
 
 "use strict";
 
+const UnknownChildError = require('./unknown_child_error');
+
 class User {
   constructor(name, id, kids) {
     this._name = name;
@@ -17,7 +19,15 @@ class User {
   get id() { return this._id; }
   get name() { return this._name; }
   get kids() { return Promise.resolve(this._kids); }
-  kidByName(name) { return Promise.resolve(this._kidsByName[name]); }
+
+  kidByName(name) {
+    const kid = this._kidsByName[name];
+    if (kid) {
+      return Promise.resolve(kid);
+    } else {
+      return Promise.reject(new UnknownChildError(name));
+    }
+  }
 }
 
 module.exports = User;

@@ -3,8 +3,8 @@
 
 "use strict";
 
-const dateFormat = require('dateformat');
 const https = require('https');
+const moment = require('moment');
 const querystring = require('querystring');
 
 const HOSTNAME = 'seacloud-2.appspot.com';
@@ -12,7 +12,7 @@ const LANGUAGE = 'en';
 
 class Request {
   constructor(username, password) {
-    this.auth = Buffer.from(`${username}:${password}`, 'utf8')
+    this.auth = new Buffer(`${username}:${password}`, 'utf8')
       .toString('base64');
   }
 
@@ -24,7 +24,7 @@ class Request {
       lg: LANGUAGE,
       v: '2',
       withDisable: 'true', // what does this mean?
-      pdt: dateFormat(new Date(), 'yymmdd')
+      // pdt: TODO: YYMMDD, but is this necessary?
     });
     return this.rawPost(`/CmdI?${qs}`, data);
   }
@@ -40,26 +40,25 @@ class Request {
   //   "e":"3/11/2017 16:15","Ptm":0
   // }]
   // &waccount2=1
-  saveStatus(user, kid, category, text) {
-    const now = new Date();
-    const date = dateFormat(now, 'yymmdd');
-    const time = dateFormat(now, 'HHMM');
+  saveStatus(user, kid, category, text, time) {
+    const dateStr = moment(time).format('YYMMDD');
+    const timeStr = moment(time).format('HHmm');
     const data = querystring.stringify({
-      pdt: date,
-      ptm: time,
+      pdt: dateStr,
+      ptm: timeStr,
       Kid: kid,
       // tsn: 0000000000000000 TODO: last tsn received from previous response
       l: JSON.stringify([{
-        Pdt: date,
+        Pdt: dateStr,
         Ptm: 0,
-        Utm: time,
+        Utm: timeStr,
         Id: 0,
         Cat: category,
         By: user,
         Txt: text,
         // lId: 0, TODO: local id? example: 220580527267
         Kid: kid,
-        e: dateFormat(now, 'm/d/yyyy H:M')
+        e: moment(time).format('M/D/YYYY H:m')
       }]),
       waccount2: 1 // what is this?
     });
