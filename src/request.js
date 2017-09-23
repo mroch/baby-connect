@@ -26,7 +26,7 @@ class Request {
       withDisable: 'true', // what does this mean?
       // pdt: TODO: YYMMDD, but is this necessary?
     });
-    return this.rawPost(`/CmdA?${qs}`, data);
+    return this.rawPost(`/CmdI?${qs}`, data);
   }
 
   // POST /CmdPostI?cmd=StatusMPost&lg=en HTTP/1.1
@@ -67,7 +67,7 @@ class Request {
     const qs = querystring.stringify({
       cmd: 'StatusMPost',
     });
-    return this.rawPost(`/CmdPostA?${qs}`, data);
+    return this.rawPost(`/CmdPostI?${qs}`, data);
   }
 
   rawPost(path, data) {
@@ -81,12 +81,13 @@ class Request {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
           'Content-Length': dataLength,
+          'BabyConnect': this.auth,
           'Authorization': `Basic ${this.auth}`,
           'User-Agent':
             // must impersonate the iOS app to get through (maybe iOS and
             // Android responses are different and it uses the UA?). trying to
             // be a good citizen by including our own identifier, though.
-            'Baby Connect for Android 5.6.1a mroch-baby-connect'
+            'Baby Connect 5.3.2i mroch-baby-connect/0.0.1'
         }
       };
 
