@@ -4,7 +4,6 @@
 "use strict";
 
 const Request = require('./request');
-const UnknownChildError = require('./unknown_child_error');
 const User = require('./user');
 const Kid = require('./kid');
 
@@ -31,6 +30,5 @@ class BabyConnect {
 }
 
 module.exports = {
-  BabyConnect,
-  UnknownChildError
+  BabyConnect
 };

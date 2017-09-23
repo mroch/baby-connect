@@ -20,7 +20,8 @@ class Kid {
     return this.saveStatus(
       Kid.Category.SLEEP_START,
       `${this.name} started sleeping`,
-      time
+      time,
+      ''
     );
   }
 
@@ -28,7 +29,8 @@ class Kid {
     return this.saveStatus(
       Kid.Category.SLEEP_STOP,
       `${this.name} stopped sleeping`,
-      time
+      time,
+      ''
     );
   }
 
@@ -37,7 +39,8 @@ class Kid {
     return this.saveStatus(
       Kid.Category.DIAPER_BM,
       `${this.name} had a BM diaper${sizeStr}`,
-      time
+      time,
+      '0,0, ,'
     );
   }
 
@@ -46,7 +49,8 @@ class Kid {
     return this.saveStatus(
       Kid.Category.DIAPER_WET,
       `${this.name} had a wet diaper${sizeStr}`,
-      time
+      time,
+      '0,0, ,'
     );
   }
 
@@ -55,7 +59,8 @@ class Kid {
     return this.saveStatus(
       Kid.Category.DIAPER_BM_WET,
       `${this.name} had a BM and wet diaper${sizeStr}`,
-      time
+      time,
+      '0,0, ,'
     );
   }
 
@@ -63,17 +68,56 @@ class Kid {
     return this.saveStatus(
       Kid.Category.DIAPER_DRY,
       `${this.name} had a dry diaper`,
-      time
+      time,
+      '0,0, ,'
+    );
+  }
+  
+  milkBottle(time, amount, unit) {
+    return this.bottle(time, amount, unit, 'Milk');
+  }
+  
+  formulaBottle(time, amount, unit) {
+    return this.bottle(time, amount, unit, 'Formula');
+  }
+  
+  waterBottle(time, amount, unit) {
+    return this.bottle(time, amount, unit, 'Water');
+  }
+  
+  juiceBottle(time, amount, unit) {
+    return this.bottle(time, amount, unit, 'Juice');
+  }
+  
+  // Unit is 'ml' or 'oz'
+  // Fluid is 'Milk', 'Formula', 'Water', or 'Juice'
+  bottle(time, amount, unit, fluid) {
+    return this.saveStatus(
+      Kid.Category.BIB,
+      `${this.name} drank ${amount} ${unit} of ${fluid.toLowerCase()}`,
+      time,
+      `${amount};${unit};${fluid}`
+    );
+  }
+  
+  // Unit is 'ml' or 'oz'
+  pump(time, amount, unit) {
+    return this.saveStatus(
+      Kid.Category.PUMPING,
+      `${amount} ${unit} Expressed`,
+      time,
+      `${amount};${unit};1;`
     );
   }
 
-  saveStatus(category, text, time) {
+  saveStatus(category, text, time, params) {
     return this._request.saveStatus(
       this._parentID,
       this._id,
       category,
       text,
-      time
+      time,
+      params
     ).then(() => true);
   }
 }

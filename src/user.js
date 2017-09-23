@@ -3,8 +3,6 @@
 
 "use strict";
 
-const UnknownChildError = require('./unknown_child_error');
-
 class User {
   constructor(name, id, kids) {
     this._name = name;
@@ -25,7 +23,7 @@ class User {
     if (kid) {
       return Promise.resolve(kid);
     } else {
-      return Promise.reject(new UnknownChildError(name));
+      return Promise.reject(new Error('Kid not found!'));
     }
   }
 }
